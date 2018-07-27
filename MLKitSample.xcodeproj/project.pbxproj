@@ -14,6 +14,8 @@
 		EA57A58A20FDC77000493E01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA57A58920FDC77000493E01 /* Assets.xcassets */; };
 		EA57A58D20FDC77000493E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA57A58B20FDC77000493E01 /* LaunchScreen.storyboard */; };
 		EA57A59520FDC88D00493E01 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA57A59420FDC88C00493E01 /* GoogleService-Info.plist */; };
+		EAAB49352105D7D8007F3161 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB49342105D7D8007F3161 /* CameraController.swift */; };
+		EAAB49372105D7F3007F3161 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB49362105D7F3007F3161 /* CameraViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		EA57A58C20FDC77000493E01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA57A58E20FDC77000493E01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA57A59420FDC88C00493E01 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EAAB49342105D7D8007F3161 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		EAAB49362105D7F3007F3161 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 		EA57A58120FDC76F00493E01 /* MLKitSample */ = {
 			isa = PBXGroup;
 			children = (
+				EAAB49332105D7BE007F3161 /* LiveData */,
 				EA57A58220FDC76F00493E01 /* AppDelegate.swift */,
 				EA57A58420FDC76F00493E01 /* ViewController.swift */,
 				EA57A58620FDC76F00493E01 /* Main.storyboard */,
@@ -89,6 +94,15 @@
 				EA57A59420FDC88C00493E01 /* GoogleService-Info.plist */,
 			);
 			path = MLKitSample;
+			sourceTree = "<group>";
+		};
+		EAAB49332105D7BE007F3161 /* LiveData */ = {
+			isa = PBXGroup;
+			children = (
+				EAAB49342105D7D8007F3161 /* CameraController.swift */,
+				EAAB49362105D7F3007F3161 /* CameraViewController.swift */,
+			);
+			path = LiveData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,6 +118,7 @@
 				EA57A57D20FDC76F00493E01 /* Resources */,
 				45FF42849E79D1DBDB4BF7C2 /* [CP] Embed Pods Frameworks */,
 				0BF31090BB41CE8BDA5F12A6 /* [CP] Copy Pods Resources */,
+				EAAB493821062660007F3161 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -226,6 +241,19 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EAAB493821062660007F3161 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -233,6 +261,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAAB49352105D7D8007F3161 /* CameraController.swift in Sources */,
+				EAAB49372105D7F3007F3161 /* CameraViewController.swift in Sources */,
 				EA57A58520FDC76F00493E01 /* ViewController.swift in Sources */,
 				EA57A58320FDC76F00493E01 /* AppDelegate.swift in Sources */,
 			);

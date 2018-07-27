@@ -10,24 +10,24 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var previewImageView:UIImageView!
-    @IBOutlet weak var decodedTextView:UITextView!
+
+    @IBOutlet weak var previewImageView: UIImageView!
+    @IBOutlet weak var decodedTextView: UITextView!
 
     lazy var vision = Vision.vision()
-    var selectedImage:UIImage?
+    var selectedImage: UIImage?
     var isCameraAvailable = true
     var isPhotolibraryAvailable = true
     enum ImageSource {
         case Photolibrary
         case Camera
     }
-    
+
     var `imagePickerController`:UIImagePickerController!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         imagePickerController = UIImagePickerController()
         imagePickerController.modalPresentationStyle = .currentContext
         imagePickerController.delegate = self
@@ -35,15 +35,15 @@ class ViewController: UIViewController {
         validateSources()
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // Function to check if sources are available
     func `validateSources`() {
-        
+
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             isCameraAvailable = false
         }
@@ -58,17 +58,17 @@ class ViewController: UIViewController {
 //    |                        |_| |___/_/\_\ |_|                        |
 //    |                                                                  |
 //    +------------------------------------------------------------------+
-    
-    @IBAction func detectText(){
+
+    @IBAction func detectText() {
         recognizeText()
     }
-    
-    private func recognizeText(){
-        
+
+    private func recognizeText() {
+
         guard let img = selectedImage else {
             return
         }
-        
+
         //let vision = Vision.vision()
         let textDetector = vision.textDetector()
         let visionImage = VisionImage(image: img)
@@ -77,12 +77,12 @@ class ViewController: UIViewController {
             guard error == nil, let texts = visiontexts, !texts.isEmpty else {
                 return
             }
-            
+
             self?.processTextRecognitionData(texts: texts)
         }
     }
-    
-    private func processTextRecognitionData(texts: [VisionText]){
+
+    private func processTextRecognitionData(texts: [VisionText]) {
         var finalText = ""
         for text in texts {
             if let block = text as? VisionTextBlock {
@@ -107,36 +107,36 @@ class ViewController: UIViewController {
 //    |       |____/_/ \_\___/___|____| |___|_|  |_/_/ \_\___|___|       |
 //    |                                                                  |
 //    +------------------------------------------------------------------+
-    
-    @IBAction func recognizeImage(){
+
+    @IBAction func recognizeImage() {
         decodeImage()
     }
-    
-    func decodeImage(){
-        
+
+    func decodeImage() {
+
 //        let options = VisionLabelDetectorOptions(
 //            confidenceThreshold: Constants.labelConfidenceThreshold
 //        )
         guard let img = selectedImage else {
             return
         }
-        
+
         //let vision = Vision.vision()
         let labelDetector = vision.labelDetector()
         let visionImage = VisionImage(image: img)
-        
+
         labelDetector.detect(in: visionImage) { [weak self] (visionlabels, error) in
             guard error == nil, let labels = visionlabels, !labels.isEmpty else {
                 return
             }
-            
+
             self?.process(labels: labels)
         }
     }
-    
-    private func process(labels:[VisionLabel]){
-        
-        if let first = labels.first{
+
+    private func process(labels: [VisionLabel]) {
+
+        if let first = labels.first {
             let text = first.label + " \(first.confidence)"
             decodedTextView.text = text
         }
@@ -147,7 +147,7 @@ class ViewController: UIViewController {
             print("\(labelText),\(entityId),\(confidence)")
         }
     }
-    
+
 //    +------------------------------------------------------------------+
 //    |                 ___   _   ___  ___ ___  ___  ___                 |
 //    |                | _ ) /_\ | _ \/ __/ _ \|   \| __|                |
@@ -155,13 +155,13 @@ class ViewController: UIViewController {
 //    |                |___/_/ \_\_|_\\___\___/|___/|___|                |
 //    |                                                                  |
 //    +------------------------------------------------------------------+
- 
-    @IBAction func recognizeBarcode(){
+
+    @IBAction func recognizeBarcode() {
         decodeBarcode()
     }
-    
-    func decodeBarcode(){
-        
+
+    func decodeBarcode() {
+
         guard let img = selectedImage else {
             return
         }
@@ -169,7 +169,7 @@ class ViewController: UIViewController {
 //        let barcodeOptions = VisionBarcodeDetectorOptions(formats: format)
         let barcodeDetector = vision.barcodeDetector()
         let visionImage = VisionImage(image: img)
-        
+
         barcodeDetector.detect(in: visionImage) {[weak self] (visionBarcodes, error) in
             guard error == nil, let barcodes = visionBarcodes, !barcodes.isEmpty else {
                 return
@@ -177,12 +177,12 @@ class ViewController: UIViewController {
             self?.process(barcodes: barcodes)
         }
     }
-    
-    private func process(barcodes:[VisionBarcode]){
-        
+
+    private func process(barcodes: [VisionBarcode]) {
+
         for barcode in barcodes {
             let corners = barcode.cornerPoints
-            
+
             let displayValue = barcode.displayValue
             let rawValue = barcode.rawValue
             decodedTextView.text = rawValue
@@ -201,7 +201,7 @@ class ViewController: UIViewController {
             }
         }
     }
-    
+
 //    +------------------------------------------------------------------+
 //    |   ___ _   ___ ___   ___  ___ _____ ___ ___ _____ ___ ___  _  _   |
 //    |  | __/_\ / __| __| |   \| __|_   _| __/ __|_   _|_ _/ _ \| \| |  |
@@ -209,13 +209,12 @@ class ViewController: UIViewController {
 //    |  |_/_/ \_\___|___| |___/|___| |_| |___\___| |_| |___\___/|_|\_|  |
 //    |                                                                  |
 //    +------------------------------------------------------------------+
- 
-    
-    @IBAction func recognizeFace(){
+
+    @IBAction func recognizeFace() {
         decodeFace()
     }
-    
-    func decodeFace(){
+
+    func decodeFace() {
         guard let img = selectedImage else {
             return
         }
@@ -226,7 +225,7 @@ class ViewController: UIViewController {
         options.modeType = .accurate
         let faceDetector = vision.faceDetector(options: options)
         let visionImage = VisionImage(image: img)
-        
+
         faceDetector.detect(in: visionImage) {[weak self] (visionFaces, error) in
             guard error == nil, let faces = visionFaces, !faces.isEmpty else {
                 return
@@ -234,12 +233,12 @@ class ViewController: UIViewController {
             self?.process(faces: faces)
         }
     }
-    
-    private func process(faces:[VisionFace]){
-        
+
+    private func process(faces: [VisionFace]) {
+
         for face in faces {
             var finalText = ""
-            
+
             // If classification was enabled:
             if face.hasSmilingProbability {
                 let smileProb = face.smilingProbability
@@ -249,7 +248,7 @@ class ViewController: UIViewController {
                 let rightEyeOpenProb = face.rightEyeOpenProbability
                 finalText += " right eye opened"
             }
-            
+
             finalText += " Doing nothing"
             decodedTextView.text = finalText
             // If face tracking was enabled:
@@ -257,50 +256,50 @@ class ViewController: UIViewController {
                 let trackingId = face.trackingID
             }
         }
-        
+
     }
     // Show the action sheet
     @IBAction func pickPressed() {
-        
+
         decodedTextView.text = ""
         pick()
     }
-    
+
     // Show the action sheet
     func pick() {
-        
+
         showActionSheet()
     }
-    
+
     func showActionSheet() {
-        
+
         let alertController = UIAlertController(title: "Choose", message: "", preferredStyle: .actionSheet)
-        
+
         if (isCameraAvailable) {
             let cameraAction = UIAlertAction(title: "Camera", style: .default) {[weak self] (_) in
                 self?.showImagePickerWith(source: .Camera)
             }
             alertController.addAction(cameraAction)
         }
-        
+
         if (isPhotolibraryAvailable) {
             let photoLibrary = UIAlertAction(title: "Photo Library", style: .default) {[weak self] (_) in
                 self?.`showImagePickerWith`(source: .Photolibrary)
             }
             alertController.addAction(photoLibrary)
         }
-        
+
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
             print("Cancel")
         }
         alertController.addAction(cancel)
-        
+
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
     // Show an image picker with either camera or photo library as source
     func showImagePickerWith(source: ImageSource) {
-        
+
         switch source {
         case .Camera:
             imagePickerController.sourceType = .camera
@@ -310,27 +309,27 @@ class ViewController: UIViewController {
         imagePickerController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         self.present(imagePickerController, animated: true, completion: nil)
     }
-    
+
 }
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            
+
             updateImageView(with: image)
             //previewImageView.image = image
             //selectedImage = image
         }
-        
+
         dismiss(animated: true, completion: nil)
     }
-    
+
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        
+
         dismiss(animated: true, completion: nil)
     }
-    
+
     private func updateImageView(with image: UIImage) {
         let orientation = UIApplication.shared.statusBarOrientation
         var scaledImageWidth: CGFloat = 0.0
@@ -368,7 +367,7 @@ extension UIImage {
         draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         // Attempt to convert the scaled image to PNG or JPEG data to preserve the bitmap info.
         guard let image = scaledImage else { return nil }
         let imageData = UIImagePNGRepresentation(image) ??
@@ -381,5 +380,3 @@ extension UIImage {
 private enum Constants {
     static let jpegCompressionQuality: CGFloat = 0.8
 }
-
-
